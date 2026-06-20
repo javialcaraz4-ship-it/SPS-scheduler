@@ -3,7 +3,7 @@
  * Replace with Supabase Auth or another secure backend before production.
  */
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Eye, EyeOff, LogIn } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useData } from '../context/DataContext';
@@ -143,6 +143,15 @@ export default function Login() {
               <LogIn size={16} />
               {loading ? 'Signing in…' : 'Sign In'}
             </button>
+
+            <div className="flex items-center justify-between">
+              <Link to="/forgot-password" className="text-xs text-red-700 hover:underline">
+                Forgot your password?
+              </Link>
+              <Link to="/register" className="text-xs text-slate-500 hover:text-red-800 transition-colors">
+                New coach? Register →
+              </Link>
+            </div>
           </form>
         </div>
 

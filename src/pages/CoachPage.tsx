@@ -7,7 +7,7 @@ export default function CoachPage() {
   const { user, logout } = useAuth();
   const {
     shifts, coaches, schools, availability,
-    updateShift, addAvailability, updateAvailability, deleteAvailability,
+    updateShift, updateCoach, addAvailability, updateAvailability, deleteAvailability,
   } = useData();
   const coachId = user?.coachId ?? '';
 
@@ -36,6 +36,7 @@ export default function CoachPage() {
         schools={schools}
         availability={availability}
         updateShift={updateShift}
+        updateCoach={updateCoach}
         addAvailability={addAvailability}
         updateAvailability={updateAvailability}
         deleteAvailability={deleteAvailability}

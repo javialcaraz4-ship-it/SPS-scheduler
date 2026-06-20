@@ -42,6 +42,7 @@ export interface Coach {
   passwordSet: boolean;
   /** MOCK ONLY — never store real passwords in plaintext in production */
   password?: string;
+  zelleInfo?: string; // phone number or email used for Zelle payments
 }
 
 // ── School ─────────────────────────────────────────────────────────────────────

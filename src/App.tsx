@@ -5,6 +5,8 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import Layout from './components/layout/Layout';
 import Login from './pages/Login';
 import SetPassword from './pages/SetPassword';
+import ForgotPassword from './pages/ForgotPassword';
+import Register from './pages/Register';
 import CoachPage from './pages/CoachPage';
 import Dashboard from './pages/Dashboard';
 import Schedule from './pages/Schedule';
@@ -42,7 +44,9 @@ function AppRoutes() {
   return (
     <Routes>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/set-password" element={<SetPassword />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/" element={<RootRedirect />} />
 
       <Route element={<ProtectedRoute requiredRole="admin" />}>

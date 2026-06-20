@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { ChevronLeft, ChevronRight, CheckCircle, AlertCircle, MapPin, Clock, X, Calendar, CalendarClock } from 'lucide-react';
+import { ChevronLeft, ChevronRight, CheckCircle, AlertCircle, MapPin, Clock, X, Calendar, CalendarClock, DollarSign, Smartphone } from 'lucide-react';
 import clsx from 'clsx';
 import type { Coach, School, Shift, CoachAvailability } from '../types';
-import { SPORT_COLORS, STATUS_COLORS, formatTime, getWeekDates, toISODate } from '../utils';
+import { SPORT_COLORS, STATUS_COLORS, formatTime, getWeekDates, toISODate, calcHours } from '../utils';
 import CoachAvailabilityPanel from '../components/availability/CoachAvailabilityPanel';
 
 const DAY_NAMES = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -14,6 +14,7 @@ interface CoachScheduleViewProps {
   schools: School[];
   availability: CoachAvailability[];
   updateShift: (s: Shift) => void;
+  updateCoach?: (c: Coach) => void;
   addAvailability: (a: CoachAvailability) => void;
   updateAvailability: (a: CoachAvailability) => void;
   deleteAvailability: (id: string) => void;
@@ -23,16 +24,49 @@ interface CoachScheduleViewProps {
 
 export default function CoachScheduleView({
   coachId, shifts, coaches, schools, availability,
-  updateShift, addAvailability, updateAvailability, deleteAvailability,
+  updateShift, updateCoach,
+  addAvailability, updateAvailability, deleteAvailability,
   allowActions = true, isAdminPreview = false,
 }: CoachScheduleViewProps) {
-  const [activeTab, setActiveTab] = useState<'schedule' | 'availability'>('schedule');
+  const [activeTab, setActiveTab] = useState<'schedule' | 'availability' | 'pay'>('schedule');
   const [weekStart, setWeekStart] = useState<Date>(() => getWeekDates()[0]);
   const [reportingShift, setReportingShift] = useState<Shift | null>(null);
   const [issueText, setIssueText] = useState('');
   const [confirmFlash, setConfirmFlash] = useState<string | null>(null);
 
   const coach = coaches.find(c => c.id === coachId);
+  const [zelleInput, setZelleInput] = useState(coach?.zelleInfo ?? '');
+  const [zelleSaved, setZelleSaved] = useState(false);
+
+  // Pay calculations — only count shifts on or before today
+  const now = new Date();
+  const todayISO  = toISODate(now);
+  const thisYear  = now.getFullYear();
+  const thisMonth = now.getMonth();
+  const activeShifts = shifts.filter(s => s.coachId === coachId && s.status !== 'Cancelled');
+  const allMtdShifts  = activeShifts.filter(s => {
+    const d = new Date(s.date + 'T12:00:00');
+    return d.getFullYear() === thisYear && d.getMonth() === thisMonth;
+  });
+  // Earned = already happened (date <= today)
+  const earnedMtdShifts = allMtdShifts.filter(s => s.date <= todayISO);
+  const upcomingMtdShifts = allMtdShifts.filter(s => s.date > todayISO);
+  const earnedYtdShifts = activeShifts.filter(s => {
+    const d = new Date(s.date + 'T12:00:00');
+    return d.getFullYear() === thisYear && s.date <= todayISO;
+  });
+  const mtdPay   = earnedMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime) * s.payRate, 0);
+  const mtdHours = earnedMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime), 0);
+  const ytdPay   = earnedYtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime) * s.payRate, 0);
+  const ytdHours = earnedYtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime), 0);
+
+  const handleSaveZelle = () => {
+    if (!coach || !updateCoach) return;
+    updateCoach({ ...coach, zelleInfo: zelleInput.trim() });
+    setZelleSaved(true);
+    setTimeout(() => setZelleSaved(false), 2500);
+  };
+
   const weekDates = getWeekDates(weekStart);
   const weekLabel = `${weekDates[0].toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} – ${weekDates[6].toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
 
@@ -120,6 +154,15 @@ export default function CoachScheduleView({
           )}
         >
           <CalendarClock size={14} /> My Availability
+        </button>
+        <button
+          onClick={() => setActiveTab('pay')}
+          className={clsx(
+            'flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-sm font-semibold transition-colors',
+            activeTab === 'pay' ? 'bg-white text-red-800 shadow-sm' : 'text-slate-500 hover:text-slate-700',
+          )}
+        >
+          <DollarSign size={14} /> My Pay
         </button>
       </div>
 
@@ -316,6 +359,145 @@ export default function CoachScheduleView({
           deleteAvailability={deleteAvailability}
           readonly={isAdminPreview && !allowActions}
         />
+      )}
+
+      {/* ── Pay Tab ── */}
+      {activeTab === 'pay' && (
+        <div className="space-y-5">
+          {/* YTD / MTD cards */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-5 py-4">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Earned This Month</p>
+              <p className="text-2xl font-bold text-green-700">${mtdPay.toFixed(0)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{earnedMtdShifts.length} shifts · {mtdHours.toFixed(1)}h</p>
+            </div>
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-5 py-4">
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Year to Date</p>
+              <p className="text-2xl font-bold text-slate-900">${ytdPay.toFixed(0)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{earnedYtdShifts.length} shifts · {ytdHours.toFixed(1)}h</p>
+            </div>
+          </div>
+
+          {/* Monthly shifts breakdown */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+            <div className="px-4 py-3 border-b border-slate-100">
+              <h3 className="font-semibold text-slate-900 text-sm">This Month's Shifts</h3>
+            </div>
+            {allMtdShifts.length === 0 ? (
+              <p className="px-4 py-6 text-center text-slate-400 text-sm">No shifts this month</p>
+            ) : (
+              <div className="divide-y divide-slate-50">
+                {/* Earned shifts */}
+                {earnedMtdShifts.length > 0 && (
+                  <div className="px-4 py-2 bg-slate-50">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Earned</span>
+                  </div>
+                )}
+                {[...earnedMtdShifts]
+                  .sort((a, b) => a.date.localeCompare(b.date))
+                  .map(s => {
+                    const school = schools.find(sc => sc.id === s.schoolId);
+                    const hours  = calcHours(s.startTime, s.endTime);
+                    const pay    = hours * s.payRate;
+                    const dateLabel = new Date(s.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                    const colors = SPORT_COLORS[s.sport];
+                    return (
+                      <div key={s.id} className="px-4 py-3 flex items-center gap-3">
+                        <div className={clsx('w-1.5 h-8 rounded-full flex-shrink-0', colors.bg.replace('-100', '-400'))} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-slate-900 truncate">{school?.name ?? '—'}</p>
+                          <p className="text-xs text-slate-500">{dateLabel} · {formatTime(s.startTime)}–{formatTime(s.endTime)}</p>
+                        </div>
+                        <div className="text-right flex-shrink-0">
+                          <p className="text-sm font-semibold text-green-700">${pay.toFixed(0)}</p>
+                          <p className="text-xs text-slate-400">{hours.toFixed(1)}h</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+
+                {/* Upcoming shifts */}
+                {upcomingMtdShifts.length > 0 && (
+                  <>
+                    <div className="px-4 py-2 bg-slate-50">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">Upcoming (not yet earned)</span>
+                    </div>
+                    {[...upcomingMtdShifts]
+                      .sort((a, b) => a.date.localeCompare(b.date))
+                      .map(s => {
+                        const school = schools.find(sc => sc.id === s.schoolId);
+                        const hours  = calcHours(s.startTime, s.endTime);
+                        const pay    = hours * s.payRate;
+                        const dateLabel = new Date(s.date + 'T12:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+                        const colors = SPORT_COLORS[s.sport];
+                        return (
+                          <div key={s.id} className="px-4 py-3 flex items-center gap-3 opacity-50">
+                            <div className={clsx('w-1.5 h-8 rounded-full flex-shrink-0', colors.bg.replace('-100', '-400'))} />
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-slate-900 truncate">{school?.name ?? '—'}</p>
+                              <p className="text-xs text-slate-500">{dateLabel} · {formatTime(s.startTime)}–{formatTime(s.endTime)}</p>
+                            </div>
+                            <div className="text-right flex-shrink-0">
+                              <p className="text-sm font-semibold text-slate-400">${pay.toFixed(0)}</p>
+                              <p className="text-xs text-slate-400">{hours.toFixed(1)}h</p>
+                            </div>
+                          </div>
+                        );
+                      })}
+                  </>
+                )}
+              </div>
+            )}
+            {earnedMtdShifts.length > 0 && (
+              <div className="px-4 py-3 bg-slate-50 border-t border-slate-100 flex justify-between">
+                <span className="text-sm font-semibold text-slate-700">Earned Total</span>
+                <span className="text-sm font-bold text-green-700">${mtdPay.toFixed(0)}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Zelle info */}
+          <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-3">
+            <div className="flex items-center gap-2 mb-1">
+              <Smartphone size={16} className="text-slate-500" />
+              <h3 className="font-semibold text-slate-900 text-sm">Zelle Payment Info</h3>
+            </div>
+            <p className="text-xs text-slate-500">
+              SPS pays coaches monthly via Zelle. Enter the phone number or email linked to your Zelle account so we can send your payment.
+            </p>
+            <div className="space-y-2">
+              <label className="block text-xs font-medium text-slate-700">Your Zelle phone or email</label>
+              <input
+                type="text"
+                value={zelleInput}
+                onChange={e => setZelleInput(e.target.value)}
+                placeholder="e.g. 555-867-5309 or coach@email.com"
+                className="w-full border border-slate-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-red-700 focus:border-transparent"
+              />
+            </div>
+            {allowActions && (
+              <button
+                onClick={handleSaveZelle}
+                disabled={!zelleInput.trim()}
+                className={clsx(
+                  'w-full py-2.5 rounded-lg text-sm font-semibold transition-colors',
+                  zelleSaved
+                    ? 'bg-green-50 text-green-700 border border-green-200'
+                    : zelleInput.trim()
+                    ? 'bg-red-800 text-white hover:bg-red-900'
+                    : 'bg-slate-100 text-slate-400 cursor-not-allowed',
+                )}
+              >
+                {zelleSaved ? '✓ Saved!' : 'Save Zelle Info'}
+              </button>
+            )}
+            {coach?.zelleInfo && !zelleSaved && (
+              <p className="text-xs text-slate-400 text-center">
+                Current: <span className="font-medium text-slate-600">{coach.zelleInfo}</span>
+              </p>
+            )}
+          </div>
+        </div>
       )}
 
       {/* Report Issue modal */}
