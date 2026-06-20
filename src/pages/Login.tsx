@@ -155,15 +155,8 @@ export default function Login() {
           </form>
         </div>
 
-        {/* Demo credentials hint */}
-        <div className="mt-4 bg-white rounded-xl border border-slate-200 p-4 text-xs text-slate-500 space-y-1">
-          <p className="font-semibold text-slate-600 mb-1.5">Demo credentials</p>
-          <p><span className="font-medium text-slate-700">Admin:</span> javi@stanfordparksports.com / password123</p>
-          <p><span className="font-medium text-slate-700">Coach:</span> 699902076 / password123</p>
-        </div>
-
         <p className="text-center text-xs text-slate-400 mt-6">
-          SPS Scheduler · Mock auth for demo only
+          SPS Scheduler · Stanford Park Sports
         </p>
       </div>
     </div>
