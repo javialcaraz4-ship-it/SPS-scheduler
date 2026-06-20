@@ -29,6 +29,10 @@ export default function Shifts() {
     else addShift(shift);
   };
 
+  const handleSaveBulk = (bulk: Shift[]) => {
+    bulk.forEach(addShift);
+  };
+
   return (
     <div>
       <Header
@@ -143,6 +147,7 @@ export default function Shifts() {
           coaches={coaches}
           schools={schools}
           onSave={handleSave}
+          onSaveBulk={handleSaveBulk}
           onClose={() => setEditing(undefined)}
         />
       )}
