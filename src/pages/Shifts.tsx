@@ -16,6 +16,7 @@ export default function Shifts() {
   const [editing, setEditing] = useState<Shift | null | undefined>(undefined);
   const [filterStatus, setFilterStatus] = useState('');
   const [filterSport, setFilterSport] = useState('');
+  const [search, setSearch] = useState('');
 
   const getCoach = (id: string | null) => coaches.find(c => c.id === id);
   const getSchool = (id: string) => schools.find(s => s.id === id);
@@ -23,6 +24,19 @@ export default function Shifts() {
   let visible = [...shifts].sort((a, b) => a.date.localeCompare(b.date) || a.startTime.localeCompare(b.startTime));
   if (filterStatus) visible = visible.filter(s => s.status === filterStatus);
   if (filterSport)  visible = visible.filter(s => s.sport === filterSport);
+  if (search) {
+    const q = search.toLowerCase();
+    visible = visible.filter(s => {
+      const coach  = getCoach(s.coachId);
+      const school = getSchool(s.schoolId);
+      return (
+        coach?.name.toLowerCase().includes(q) ||
+        school?.name.toLowerCase().includes(q) ||
+        s.sport.toLowerCase().includes(q) ||
+        s.date.includes(q)
+      );
+    });
+  }
 
   const handleSave = (shift: Shift) => {
     if (shifts.find(s => s.id === shift.id)) updateShift(shift);
@@ -37,7 +51,10 @@ export default function Shifts() {
     <div>
       <Header
         title="Shift Management"
-        subtitle={`${shifts.length} total shifts`}
+        subtitle={search ? `${visible.length} of ${shifts.length} shifts` : `${shifts.length} total shifts`}
+        searchValue={search}
+        onSearch={setSearch}
+        searchPlaceholder="Search coach, school, sport..."
         actions={
           <button
             onClick={() => setEditing(null)}

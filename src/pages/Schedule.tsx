@@ -18,6 +18,12 @@ export default function Schedule() {
 
   const [viewMode, setViewMode] = useState<ViewMode>('admin');
   const [previewCoachId, setPreviewCoachId] = useState('');
+  const [search, setSearch] = useState('');
+
+  const q = search.toLowerCase();
+  const filteredCoaches = q
+    ? coaches.filter(c => c.name.toLowerCase().includes(q) || c.sports.some(s => s.toLowerCase().includes(q)))
+    : coaches;
 
   useEffect(() => {
     if (viewMode === 'preview' && !previewCoachId) {
@@ -70,16 +76,19 @@ export default function Schedule() {
         title="Schedule"
         subtitle={
           viewMode === 'admin'
-            ? 'Admin · All coaches'
+            ? search ? `Showing ${filteredCoaches.length} of ${coaches.length} coaches` : 'Admin · All coaches'
             : `Coach Preview · ${previewCoach?.name ?? '—'}`
         }
         actions={viewSwitcher}
+        searchValue={search}
+        onSearch={setSearch}
+        searchPlaceholder="Search coaches..."
       />
 
       {viewMode === 'admin' ? (
         <AdminScheduleView
           shifts={shifts}
-          coaches={coaches}
+          coaches={filteredCoaches}
           schools={schools}
           availability={availability}
           addShift={addShift}
