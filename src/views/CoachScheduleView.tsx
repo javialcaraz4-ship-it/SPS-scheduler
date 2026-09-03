@@ -373,9 +373,9 @@ export default function CoachScheduleView({
               <p className="text-xs text-slate-400 mt-0.5">{earnedMtdShifts.length} shifts · {mtdHours.toFixed(1)}h</p>
             </div>
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-5 py-4">
-              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Year to Date</p>
-              <p className="text-2xl font-bold text-slate-900">${ytdPay.toFixed(0)}</p>
-              <p className="text-xs text-slate-400 mt-0.5">{earnedYtdShifts.length} shifts · {ytdHours.toFixed(1)}h</p>
+              <p className="text-xs font-medium text-slate-500 uppercase tracking-wide mb-1">Estimate for This Month</p>
+              <p className="text-2xl font-bold text-slate-900">${allMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime) * s.payRate, 0).toFixed(0)}</p>
+              <p className="text-xs text-slate-400 mt-0.5">{allMtdShifts.length} shifts · {allMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime), 0).toFixed(1)}h</p>
             </div>
           </div>
 
