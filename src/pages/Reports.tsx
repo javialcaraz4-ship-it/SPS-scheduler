@@ -73,7 +73,7 @@ export default function Reports() {
         r.confirmed,
         r.issues,
         r.hours.toFixed(1),
-        `$${r.coach.payRate}/hr`,
+        r.hours > 0 ? `$${(r.pay / r.hours).toFixed(0)}/hr avg` : '—',
         `$${r.pay.toFixed(2)}`,
       ]),
       [],
@@ -206,7 +206,7 @@ export default function Reports() {
                         : <span className="text-slate-400">0</span>}
                     </td>
                     <td className="px-5 py-3 font-semibold text-slate-900">{hours.toFixed(1)}h</td>
-                    <td className="px-5 py-3 text-slate-500">${coach.payRate}/hr</td>
+                    <td className="px-5 py-3 text-slate-500">{hours > 0 ? `$${(pay / hours).toFixed(0)}/hr avg` : '—'}</td>
                     <td className="px-5 py-3 font-semibold text-green-700">${pay.toFixed(0)}</td>
                   </tr>
                 ))}
