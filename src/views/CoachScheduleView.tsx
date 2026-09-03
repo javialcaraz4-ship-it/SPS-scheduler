@@ -364,6 +364,7 @@ export default function CoachScheduleView({
       {/* ── Pay Tab ── */}
       {activeTab === 'pay' && (
         <div className="space-y-5">
+          <p className="text-xs text-slate-400 px-1">Month-to-month estimate based on the shifts you are scheduled for.</p>
           {/* YTD / MTD cards */}
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-white rounded-xl border border-slate-200 shadow-sm px-5 py-4">
