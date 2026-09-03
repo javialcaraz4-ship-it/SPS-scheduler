@@ -51,14 +51,8 @@ export default function CoachScheduleView({
   // Earned = already happened (date <= today)
   const earnedMtdShifts = allMtdShifts.filter(s => s.date <= todayISO);
   const upcomingMtdShifts = allMtdShifts.filter(s => s.date > todayISO);
-  const earnedYtdShifts = activeShifts.filter(s => {
-    const d = new Date(s.date + 'T12:00:00');
-    return d.getFullYear() === thisYear && s.date <= todayISO;
-  });
   const mtdPay   = earnedMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime) * s.payRate, 0);
   const mtdHours = earnedMtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime), 0);
-  const ytdPay   = earnedYtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime) * s.payRate, 0);
-  const ytdHours = earnedYtdShifts.reduce((sum, s) => sum + calcHours(s.startTime, s.endTime), 0);
 
   const handleSaveZelle = () => {
     if (!coach || !updateCoach) return;
