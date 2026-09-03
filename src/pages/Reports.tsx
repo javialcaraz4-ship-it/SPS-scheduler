@@ -66,7 +66,7 @@ export default function Reports() {
     const rows = [
       [`Monthly Payroll Summary — ${monthLabel}`],
       [],
-      ['Coach', 'Total Shifts', 'Confirmed', 'Issues', 'Total Hours', 'Pay Rate', 'Est. Pay'],
+      ['Coach', 'Total Shifts', 'Confirmed', 'Issues', 'Total Hours', 'Avg Rate', 'Monthly Estimate'],
       ...hoursByCoach.map(r => [
         r.coach.name,
         r.total,
@@ -182,7 +182,7 @@ export default function Reports() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-slate-100 bg-slate-50">
-                  {['Coach', 'Shifts', 'Confirmed', 'Issues', 'Total Hours', 'Pay Rate', 'Est. Pay'].map(h => (
+                  {['Coach', 'Shifts', 'Confirmed', 'Issues', 'Total Hours', 'Avg Rate', 'Monthly Estimate'].map(h => (
                     <th key={h} className="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">{h}</th>
                   ))}
                 </tr>
