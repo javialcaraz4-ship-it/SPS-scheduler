@@ -1,12 +1,14 @@
 import { createContext, useContext } from 'react';
 import { useAppData } from '../hooks/useAppData';
 import type { Coach, School, Shift, CoachAvailability } from '../types';
+import type { NoClassDate } from '../data/seedData';
 
 export interface AppData {
   coaches: Coach[];
   schools: School[];
   shifts: Shift[];
   availability: CoachAvailability[];
+  noClassDates: NoClassDate[];
   addShift: (s: Shift) => void;
   updateShift: (s: Shift) => void;
   deleteShift: (id: string) => void;

@@ -4,7 +4,9 @@ import {
   schools as initialSchools,
   shifts as initialShifts,
   availabilities as initialAvailabilities,
-} from '../data/mockData';
+  noClassDates as initialNoClassDates,
+} from '../data/seedData';
+import type { NoClassDate } from '../data/seedData';
 import type { Coach, School, Shift, CoachAvailability } from '../types';
 
 export function useAppData() {
@@ -12,6 +14,7 @@ export function useAppData() {
   const [schools, setSchools] = useState<School[]>(initialSchools);
   const [shifts, setShifts] = useState<Shift[]>(initialShifts);
   const [availability, setAvailability] = useState<CoachAvailability[]>(initialAvailabilities);
+  const [noClassDates] = useState<NoClassDate[]>(initialNoClassDates);
 
   const addShift = (shift: Shift) => setShifts(prev => [...prev, shift]);
   const updateShift = (updated: Shift) =>
@@ -35,7 +38,7 @@ export function useAppData() {
     setAvailability(prev => prev.filter(a => a.id !== id));
 
   return {
-    coaches, schools, shifts, availability,
+    coaches, schools, shifts, availability, noClassDates,
     addShift, updateShift, deleteShift,
     addCoach, updateCoach,
     addSchool, updateSchool,
