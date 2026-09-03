@@ -172,7 +172,7 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_pbs',      coachId: coachId('Corey'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-03', endDate: '2026-11-19', startTime: '3:30pm', endTime: '4:30pm', noClass: '',              payRate: 100 }),
   ...expandShifts({ schoolId: 'sc_cds',      coachId: null,               sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-17', endDate: '2026-12-09', startTime: '4:00pm', endTime: '5:00pm', noClass: '11/12, 11/26' }),
   ...expandShifts({ schoolId: 'sc_whiteoaks',coachId: coachId('Alex'),    sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-10', endDate: '2026-10-29', startTime: '2:40pm', endTime: '3:40pm', noClass: '',              payRate: 75 }),
-  ...expandShifts({ schoolId: 'sc_ponderosa',coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Thursday',  startDate: '2026-09-17', endDate: '2026-11-05', startTime: '2:00pm', endTime: '3:40pm', noClass: '',              payRate: 90 }),
+  ...expandShifts({ schoolId: 'sc_ponderosa',coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Thursday',  startDate: '2026-09-17', endDate: '2026-11-05', startTime: '2:00pm', endTime: '3:40pm', noClass: '',              payRate: 54 }), // $90 flat (1h40m × $54/hr)
 
   // FRIDAY
   ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Alex'),    sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-08-28', endDate: '2026-12-11', startTime: '5:15pm', endTime: '6:15pm', noClass: '9/11, 10/9, 10/30, 11/27', payRate: 75 }),
