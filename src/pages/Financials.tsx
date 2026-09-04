@@ -60,9 +60,6 @@ export default function Financials() {
     setData(loadData(selectedYear, selectedMonth));
   }, [selectedYear, selectedMonth]);
 
-  useEffect(() => {
-    saveData(selectedYear, selectedMonth, data);
-  }, [data, selectedYear, selectedMonth]);
 
   // Schools that have at least one non-cancelled shift this month
   const monthShifts = shifts.filter(s => {
@@ -80,10 +77,12 @@ export default function Financials() {
     data[schoolId] ?? { registrations: '', pricePerReg: '', expenses: '' };
 
   const updateField = (schoolId: string, field: keyof SchoolFinancials, value: string) => {
-    setData(prev => ({
-      ...prev,
-      [schoolId]: { ...getEntry(schoolId), [field]: value },
-    }));
+    setData(prev => {
+      const current = prev[schoolId] ?? { registrations: '', pricePerReg: '', expenses: '' };
+      const next = { ...prev, [schoolId]: { ...current, [field]: value } };
+      saveData(selectedYear, selectedMonth, next);
+      return next;
+    });
   };
 
   // Per-school calculations
