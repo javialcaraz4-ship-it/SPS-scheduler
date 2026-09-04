@@ -8,6 +8,7 @@ import {
   BarChart3,
   CalendarCheck,
   LogOut,
+  DollarSign,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { useAuth } from '../../context/AuthContext';
@@ -20,6 +21,7 @@ const navItems = [
   { to: '/schools',      icon: School,          label: 'Schools' },
   { to: '/shifts',       icon: ClipboardList,   label: 'Shifts' },
   { to: '/reports',      icon: BarChart3,       label: 'Reports' },
+  { to: '/financials',   icon: DollarSign,      label: 'Financials' },
 ];
 
 export default function Sidebar() {

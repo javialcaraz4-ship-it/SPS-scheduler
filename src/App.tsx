@@ -14,6 +14,7 @@ import Coaches from './pages/Coaches';
 import Schools from './pages/Schools';
 import Shifts from './pages/Shifts';
 import Reports from './pages/Reports';
+import Financials from './pages/Financials';
 import Availability from './pages/Availability';
 import type { Coach, School, Shift, CoachAvailability } from './types';
 
@@ -57,6 +58,7 @@ function AppRoutes() {
           <Route path="/schools"      element={<Schools />} />
           <Route path="/shifts"       element={<Shifts />} />
           <Route path="/reports"      element={<Reports />} />
+          <Route path="/financials"   element={<Financials />} />
           <Route path="/availability" element={<Availability />} />
         </Route>
       </Route>
