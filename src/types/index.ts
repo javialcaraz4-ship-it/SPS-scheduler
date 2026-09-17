@@ -1,4 +1,4 @@
-export type Sport = 'Soccer' | 'Basketball' | 'Volleyball' | 'Multi-Sport' | 'Camp' | 'Cheerleading';
+export type Sport = 'Soccer' | 'Basketball' | 'Volleyball' | 'Multi-Sport' | 'Camp' | 'Cheerleading' | 'Tennis';
 
 export type ShiftStatus =
   | 'Scheduled'

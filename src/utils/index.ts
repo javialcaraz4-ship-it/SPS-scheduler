@@ -7,6 +7,7 @@ export const SPORT_COLORS: Record<Sport, { bg: string; text: string; border: str
   'Multi-Sport': { bg: 'bg-blue-100',   text: 'text-blue-800',   border: 'border-blue-300' },
   Camp:          { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-300' },
   Cheerleading:  { bg: 'bg-pink-100',   text: 'text-pink-800',   border: 'border-pink-300' },
+  Tennis:        { bg: 'bg-teal-100',   text: 'text-teal-800',   border: 'border-teal-300' },
 };
 
 export const STATUS_COLORS: Record<string, string> = {
