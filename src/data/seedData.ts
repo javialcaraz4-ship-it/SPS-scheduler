@@ -178,8 +178,8 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Devyn'),   sport: 'Tennis',     dayOfWeek: 'Thursday',  startDate: '2026-09-10', endDate: '2027-01-28', startTime: '3:30pm', endTime: '4:30pm', noClass: '10/1, 10/15, 11/26, 12/24, 12/31', payRate: 60 }),
 
   // FRIDAY
-  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Alex'),    sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-08-28', endDate: '2026-12-11', startTime: '5:15pm', endTime: '6:15pm', noClass: '9/11, 10/9, 10/30, 11/27', payRate: 75 }),
-  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Quique'),  sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-08-28', endDate: '2026-12-11', startTime: '5:15pm', endTime: '6:15pm', noClass: '9/11, 10/9, 10/30, 11/27', payRate: 50 }),
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Alex'),    sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-08-28', endDate: '2026-12-11', startTime: '5:15pm', endTime: '6:15pm', noClass: '9/11, 10/2, 10/9, 10/30, 11/27', payRate: 75 }),
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Quique'),  sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-08-28', endDate: '2026-12-11', startTime: '5:15pm', endTime: '6:15pm', noClass: '9/11, 10/2, 10/9, 10/30, 11/27', payRate: 50 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Friday',    startDate: '2026-09-11', endDate: '2026-11-13', startTime: '3:40pm', endTime: '4:40pm', noClass: '10/9, 10/16',              payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Friday',    startDate: '2026-09-11', endDate: '2026-11-13', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/9, 10/16',              payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_svis_co',  coachId: coachId('Bryce'),   sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-11-20', startTime: '3:00pm', endTime: '4:00pm', noClass: '10/16',                    payRate: 80 }),
@@ -228,7 +228,7 @@ export const noClassDates: NoClassDate[] = [
   // CDS – Thu Basketball
   ...parseNoDates('11/12, 11/26').map(date => ({ date, schoolId: 'sc_cds' })),
   // BHCS – Fri Basketball
-  ...parseNoDates('9/11, 10/9, 10/30, 11/27').map(date => ({ date, schoolId: 'sc_bhcs' })),
+  ...parseNoDates('9/11, 10/2, 10/9, 10/30, 11/27').map(date => ({ date, schoolId: 'sc_bhcs' })),
   // La Scuola – Fri Soccer
   ...parseNoDates('10/9, 10/16').map(date => ({ date, schoolId: 'sc_lascuola' })),
   // SVIS Cohn – Fri Basketball
