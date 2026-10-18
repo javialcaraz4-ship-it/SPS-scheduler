@@ -50,12 +50,12 @@ function expandShifts(opts: {
 }): Shift[] {
   const dow = DOW_MAP[opts.dayOfWeek];
   const noDates = new Set(parseNoDates(opts.noClass));
-  const start = new Date(opts.startDate + 'T12:00:00');
-  const end = new Date(opts.endDate + 'T12:00:00');
+  const start = new Date(opts.startDate + 'T12:00:00Z');
+  const end = new Date(opts.endDate + 'T12:00:00Z');
   const shifts: Shift[] = [];
   const cur = new Date(start);
   // advance to first matching DOW
-  while (cur.getDay() !== dow) cur.setDate(cur.getDate() + 1);
+  while (cur.getUTCDay() !== dow) cur.setUTCDate(cur.getUTCDate() + 1);
   while (cur <= end) {
     const iso = cur.toISOString().slice(0, 10);
     if (!noDates.has(iso)) {
@@ -72,7 +72,7 @@ function expandShifts(opts: {
         notes: '',
       });
     }
-    cur.setDate(cur.getDate() + 7);
+    cur.setUTCDate(cur.getUTCDate() + 7);
   }
   return shifts;
 }
@@ -140,7 +140,9 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_northstar',coachId: coachId('Bryce'),   sport: 'Multi-Sport',dayOfWeek: 'Monday',    startDate: '2026-08-24', endDate: '2026-11-02', startTime: '3:00pm', endTime: '4:00pm', noClass: '9/7, 9/28, 10/12',           payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_whiteoaks',coachId: coachId('Quique'),  sport: 'Soccer',     dayOfWeek: 'Monday',    startDate: '2026-09-14', endDate: '2026-11-09', startTime: '2:40pm', endTime: '3:40pm', noClass: '10/12',                            payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Justin'),  sport: 'Basketball', dayOfWeek: 'Monday',    startDate: '2026-09-14', endDate: '2027-01-25', startTime: '3:30pm', endTime: '4:30pm', noClass: '11/23, 12/21, 12/28, 1/4, 1/18', payRate: 75 }),
-  ...expandShifts({ schoolId: 'sc_ycis',     coachId: null,               sport: 'Basketball', dayOfWeek: 'Monday',    startDate: '2026-09-14', endDate: '2027-01-25', startTime: '3:30pm', endTime: '4:30pm', noClass: '11/23, 12/21, 12/28, 1/4, 1/18', payRate: 60 }),
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: null,               sport: 'Basketball', dayOfWeek: 'Monday',    startDate: '2026-09-14', endDate: '2027-01-25', startTime: '3:30pm', endTime: '4:30pm', noClass: '10/19, 11/23, 12/21, 12/28, 1/4, 1/18', payRate: 60 }),
+  // One-off: Anthony covers the open YCIS Monday slot on 10/19
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Monday',    startDate: '2026-10-19', endDate: '2026-10-19', startTime: '3:30pm', endTime: '4:30pm', noClass: '', payRate: 60 }),
 
   // TUESDAY
   ...expandShifts({ schoolId: 'sc_laslom',   coachId: coachId('Corey'),   sport: 'Basketball', dayOfWeek: 'Tuesday',   startDate: '2026-09-01', endDate: '2026-12-01', startTime: '2:25pm', endTime: '3:25pm', noClass: '11/10, 11/24',  payRate: 100 }),
@@ -159,8 +161,8 @@ const rawShifts: Shift[] = [
 
   // WEDNESDAY
   // Anthony does La Scuola back-to-back
-  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '3:40pm', endTime: '4:40pm', noClass: '10/14',                    payRate: 70 }),
-  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/14',                    payRate: 70 }),
+  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '3:40pm', endTime: '4:40pm', noClass: '10/15',                    payRate: 70 }),
+  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/15',                    payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Andy'),    sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25',      payRate: 100 }),
   ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Justin'),  sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25',      payRate: 60 }),
   ...expandShifts({ schoolId: 'sc_oakknoll', coachId: coachId('Vlado'),   sport: 'Basketball', dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2026-12-16', startTime: '3:00pm', endTime: '4:00pm', noClass: '10/14, 11/11, 11/25',     payRate: 75 }),
@@ -232,7 +234,7 @@ export const noClassDates: NoClassDate[] = [
   // Las Lomitas – Thu Cheer
   ...parseNoDates('11/12, 11/26').map(date => ({ date, schoolId: 'sc_laslom' })),
   // La Scuola – Thu Basketball
-  ...parseNoDates('10/14').map(date => ({ date, schoolId: 'sc_lascuola' })),
+  ...parseNoDates('10/15').map(date => ({ date, schoolId: 'sc_lascuola' })),
   // CDS – Thu Basketball
   ...parseNoDates('11/12, 11/26').map(date => ({ date, schoolId: 'sc_cds' })),
   // BHCS – Fri Basketball
