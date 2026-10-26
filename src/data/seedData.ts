@@ -177,6 +177,8 @@ const rawShifts: Shift[] = [
   // THURSDAY
   ...expandShifts({ schoolId: 'sc_laslom',   coachId: coachId('Jessica'), sport: 'Cheerleading', dayOfWeek: 'Thursday',  startDate: '2026-09-03', endDate: '2026-12-03', startTime: '3:30pm', endTime: '4:30pm', noClass: '11/12, 11/26', payRate: 45 }),
   ...expandShifts({ schoolId: 'sc_pbs',      coachId: coachId('Corey'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-03', endDate: '2026-11-19', startTime: '3:30pm', endTime: '4:30pm', noClass: '',              payRate: 100 }),
+  // PBS make-up class
+  ...expandShifts({ schoolId: 'sc_pbs',      coachId: coachId('Corey'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-12-03', endDate: '2026-12-03', startTime: '3:30pm', endTime: '4:30pm', noClass: '',              payRate: 100 }),
   ...expandShifts({ schoolId: 'sc_cds',      coachId: coachId('Mouhamad'),sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-17', endDate: '2026-12-09', startTime: '4:00pm', endTime: '5:00pm', noClass: '11/12, 11/26', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_cds',      coachId: coachId('Emma'),    sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-17', endDate: '2026-12-09', startTime: '4:00pm', endTime: '5:00pm', noClass: '11/12, 11/26', payRate: 60 }),
   ...expandShifts({ schoolId: 'sc_whiteoaks',coachId: coachId('Bryce'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-10', endDate: '2026-10-29', startTime: '2:40pm', endTime: '3:40pm', noClass: '',              payRate: 80 }),
