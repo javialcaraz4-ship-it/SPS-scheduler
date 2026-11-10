@@ -47,6 +47,8 @@ function expandShifts(opts: {
   endTime: string;
   noClass: string;   // "10/12, 11/23"
   payRate?: number;
+  notes?: string;
+  status?: Shift['status'];
 }): Shift[] {
   const dow = DOW_MAP[opts.dayOfWeek];
   const noDates = new Set(parseNoDates(opts.noClass));
@@ -67,9 +69,9 @@ function expandShifts(opts: {
         date: iso,
         startTime: parseTime(opts.startTime),
         endTime: parseTime(opts.endTime),
-        status: 'Scheduled',
+        status: opts.status ?? 'Scheduled',
         payRate: opts.payRate ?? 20,
-        notes: '',
+        notes: opts.notes ?? '',
       });
     }
     cur.setUTCDate(cur.getUTCDate() + 7);
@@ -95,12 +97,13 @@ export const schools: School[] = [
   { id: 'sc_bhcs',     name: 'BHCS Foster City',     address: 'Edgewater Blvd and Dorado Ln tennis courts, Foster City', contactName: '', contactEmail: '', programType: ['Basketball', 'Tennis'], notes: '', active: true },
   { id: 'sc_oakknoll', name: 'Oak Knoll',            address: '', contactName: '', contactEmail: '', programType: ['Basketball'], notes: '', active: true },
   { id: 'sc_svis_co',  name: 'SVIS (Cohn)',          address: '151 Laura Ln, Palo Alto, CA 94303', contactName: '', contactEmail: '', programType: ['Soccer', 'Basketball'], notes: '', active: true },
-  { id: 'sc_bentley',  name: 'Bentley School',       address: '151 Laura Ln, Palo Alto, CA 94303', contactName: '', contactEmail: '', programType: ['Multi-Sport'], notes: '', active: true },
+  { id: 'sc_bentley',  name: 'Bentley School',       address: '151 Laura Ln, Palo Alto, CA 94303', contactName: 'Breyana (until Dec 9), then Greg', contactEmail: '', programType: ['Multi-Sport', 'Cheerleading', 'Volleyball'], notes: 'Winter 2026-27, Tuesdays: cheer 3:15-4:15 (K-4) then volleyball 4:15-5:15 (grades 3-5). Blacktop, indoor backup in the tent or gym. ADDRESS UNCONFIRMED: the address above is from the fall board and looked copied from SVIS Cohn. Winter dates came from Javi and are PENDING confirmation against the signed contract. Winter volleyball coach TBD.', active: true },
   { id: 'sc_laent',    name: 'La Entrada',           address: '', contactName: '', contactEmail: '', programType: ['Basketball'], notes: '', active: true },
   { id: 'sc_addison',  name: 'Addison',              address: '', contactName: '', contactEmail: '', programType: ['Soccer'], notes: '', active: true },
   { id: 'sc_pbs',      name: 'PBS',                  address: '', contactName: '', contactEmail: '', programType: ['Basketball'], notes: '', active: true },
   { id: 'sc_ponderosa',name: 'Ponderosa',            address: '', contactName: '', contactEmail: '', programType: ['Soccer'], notes: '', active: true },
   { id: 'sc_cds',      name: 'CDS',                  address: '333 Dolores St, San Francisco, CA 94110', contactName: '', contactEmail: '', programType: ['Basketball'], notes: '', active: true },
+  { id: 'sc_brittan', name: 'Brittan Acres',       address: '', contactName: '', contactEmail: '', programType: ['Cheerleading'], notes: 'MUR (multi-use room)', active: true },
 ];
 
 // ── Coaches ───────────────────────────────────────────────────────────────────
@@ -117,6 +120,7 @@ export const coaches: Coach[] = [
   { id: 'co_diego',   name: 'Diego',   email: '', phone: '', sports: ['Soccer'],              availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_genesis', name: 'Genesis', email: '', phone: '', sports: ['Basketball', 'Soccer'], availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_jessica', name: 'Jessica', email: '', phone: '', sports: ['Cheerleading'],        availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
+  { id: 'co_emily', name: 'Emily',   email: '', phone: '', sports: ['Cheerleading'],        availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_justin',  name: 'Justin',  email: '', phone: '', sports: ['Basketball'],          availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_kawai',   name: 'Kawai',   email: '', phone: '', sports: ['Basketball'],          availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_peter',   name: 'Peter',   email: '', phone: '', sports: ['Soccer', 'Basketball'], availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
@@ -172,12 +176,22 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Kevin'),  sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-10-29', endDate: '2026-10-29', startTime: '3:40pm', endTime: '4:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/15, 10/29',                    payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Kevin'),  sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-10-29', endDate: '2026-10-29', startTime: '4:40pm', endTime: '5:40pm', noClass: '', payRate: 70 }),
-  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Andy'),    sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25',      payRate: 100 }),
-  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Justin'),  sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25',      payRate: 60 }),
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Andy'),    sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25, 11/4',      payRate: 100 }),
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Justin'),  sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25, 11/4',      payRate: 60 }),
+  // One-off 11/4: Anthony (assistant) + Quique cover BHCS tennis; Andy/Justin out
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Anthony'), sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-11-04', endDate: '2026-11-04', startTime: '1:30pm', endTime: '2:30pm', noClass: '', payRate: 65 }),
+  ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Quique'),  sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-11-04', endDate: '2026-11-04', startTime: '1:30pm', endTime: '2:30pm', noClass: '', payRate: 100 }),
   ...expandShifts({ schoolId: 'sc_oakknoll', coachId: coachId('Vlado'),   sport: 'Basketball', dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2026-12-16', startTime: '3:00pm', endTime: '4:00pm', noClass: '10/14, 11/11, 11/25',     payRate: 75 }),
-  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Ashley'),  sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2027-01-27', startTime: '3:30pm', endTime: '4:30pm', noClass: '9/30, 11/25, 12/23, 12/30', payRate: 60 }),
-  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2027-01-27', startTime: '3:30pm', endTime: '4:30pm', noClass: '9/30, 11/25, 12/23, 12/30', payRate: 80 }),
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Ashley'),  sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2027-01-27', startTime: '3:30pm', endTime: '4:30pm', noClass: '9/30, 11/25, 12/23, 12/30, 11/4', payRate: 60 }),
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2027-01-27', startTime: '3:30pm', endTime: '4:30pm', noClass: '9/30, 11/25, 12/23, 12/30, 11/4', payRate: 80 }),
+  // One-off 11/4: Anthony + Quique cover YCIS soccer; Ashley/Peter out
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Anthony'), sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-11-04', endDate: '2026-11-04', startTime: '3:30pm', endTime: '4:30pm', noClass: '', payRate: 75 }),
+  ...expandShifts({ schoolId: 'sc_ycis',     coachId: coachId('Quique'),  sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-11-04', endDate: '2026-11-04', startTime: '3:30pm', endTime: '4:30pm', noClass: '', payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_bentley',  coachId: coachId('Corey'),   sport: 'Multi-Sport',dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-02', startTime: '3:30pm', endTime: '4:30pm', noClass: '',                          payRate: 100 }),
+  // Bentley winter (Tuesdays, back to back). 10 dates per Javi, PENDING confirmation against the signed contract:
+  // 12/1, 12/8, 1/5, 1/12, 1/19, 1/26, 2/2, 2/9, 2/23, 3/2. No class 12/15, 12/22, 12/29, 2/16.
+  ...expandShifts({ schoolId: 'sc_bentley',  coachId: coachId('Emily'),   sport: 'Cheerleading', dayOfWeek: 'Tuesday',   startDate: '2026-12-01', endDate: '2027-03-02', startTime: '3:15pm', endTime: '4:15pm', noClass: '12/15, 12/22, 12/29, 2/16', payRate: 65, notes: 'Dates pending confirmation (not yet checked against the signed contract). Blacktop; indoor backup in the tent or gym.' }),
+  ...expandShifts({ schoolId: 'sc_bentley',  coachId: null,               sport: 'Volleyball',   dayOfWeek: 'Tuesday',   startDate: '2026-12-01', endDate: '2027-03-02', startTime: '4:15pm', endTime: '5:15pm', noClass: '12/15, 12/22, 12/29, 2/16', payRate: 0, status: 'Needs Coverage', notes: 'NEEDS A COACH (TBD). Dates pending confirmation (not yet checked against the signed contract). Blacktop; indoor backup in the tent or gym.' }),
   // Peter through 10/21; Quique takes over from 10/28 on
   ...expandShifts({ schoolId: 'sc_addison',  coachId: coachId('Peter'),   sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-09-09', endDate: '2026-10-21', startTime: '1:30pm', endTime: '2:30pm', noClass: '',                          payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_addison',  coachId: coachId('Quique'),  sport: 'Soccer',     dayOfWeek: 'Wednesday', startDate: '2026-10-28', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '11/25',                     payRate: 80 }),
@@ -208,7 +222,9 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'),   sport: 'Soccer',     dayOfWeek: 'Friday',    startDate: '2026-10-09', endDate: '2026-11-13', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/9, 10/16, 10/30',              payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Kevin'),    sport: 'Soccer',     dayOfWeek: 'Friday',    startDate: '2026-10-30', endDate: '2026-10-30', startTime: '4:40pm', endTime: '5:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_svis_co',  coachId: coachId('Bryce'),   sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-11-20', startTime: '3:00pm', endTime: '4:00pm', noClass: '10/16',                    payRate: 80 }),
-  ...expandShifts({ schoolId: 'sc_synapse',  coachId: coachId('Jessica'), sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-12-18', startTime: '2:45pm', endTime: '3:45pm', noClass: '10/9',                     payRate: 45 }),
+  ...expandShifts({ schoolId: 'sc_synapse',  coachId: coachId('Jessica'), sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-11-06', startTime: '2:45pm', endTime: '3:45pm', noClass: '10/9',                     payRate: 45 }),
+  // Brittan Acres cheer (winter): Fridays 2:35-3:35, starts 11/13. No-class dates and the makeup Friday are not set yet.
+  ...expandShifts({ schoolId: 'sc_brittan',  coachId: coachId('Emily'),   sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-11-13', endDate: '2027-01-29', startTime: '2:35pm', endTime: '3:35pm', noClass: '', payRate: 45 }),
 ];
 
 export const shifts: Shift[] = rawShifts;
