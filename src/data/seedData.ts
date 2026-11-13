@@ -113,6 +113,7 @@ export const coaches: Coach[] = [
   { id: 'co_andy',    name: 'Andy',    email: '', phone: '', sports: ['Basketball'],          availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_anthony', name: 'Anthony', email: '', phone: '', sports: ['Basketball'],          availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_kevin',   name: 'Kevin',   email: '', phone: '', sports: ['Soccer', 'Basketball'], availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
+  { id: 'co_matteo',   name: 'Matteo', email: '', phone: '', sports: ['Soccer', 'Basketball'], availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_ashley',  name: 'Ashley',  email: '', phone: '', sports: ['Soccer'],              availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_bryce',   name: 'Bryce',   email: '', phone: '', sports: ['Basketball', 'Soccer'], availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
   { id: 'co_corey',   name: 'Corey',   email: '', phone: '', sports: ['Basketball'],          availability: '', payRate: 20, active: true, inviteStatus: 'Not Invited', passwordSet: false },
@@ -173,8 +174,10 @@ const rawShifts: Shift[] = [
   // WEDNESDAY
   // Anthony does La Scuola back-to-back
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '3:40pm', endTime: '4:40pm', noClass: '10/15, 10/29',                    payRate: 70 }),
+  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Matteo'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-11-12', endDate: '2026-11-12', startTime: '3:40pm', endTime: '4:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Kevin'),  sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-10-29', endDate: '2026-10-29', startTime: '3:40pm', endTime: '4:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Anthony'), sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-09-09', endDate: '2026-11-11', startTime: '4:40pm', endTime: '5:40pm', noClass: '10/15, 10/29',                    payRate: 70 }),
+  ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Matteo'),   sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-11-12', endDate: '2026-11-12', startTime: '4:40pm', endTime: '5:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_lascuola', coachId: coachId('Kevin'),  sport: 'Basketball', dayOfWeek: 'Thursday',  startDate: '2026-10-29', endDate: '2026-10-29', startTime: '4:40pm', endTime: '5:40pm', noClass: '', payRate: 70 }),
   ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Andy'),    sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25, 11/4',      payRate: 100 }),
   ...expandShifts({ schoolId: 'sc_bhcs',     coachId: coachId('Justin'),  sport: 'Tennis',     dayOfWeek: 'Wednesday', startDate: '2026-09-02', endDate: '2026-12-09', startTime: '1:30pm', endTime: '2:30pm', noClass: '10/7, 11/11, 11/25, 11/4',      payRate: 60 }),
@@ -224,7 +227,7 @@ const rawShifts: Shift[] = [
   ...expandShifts({ schoolId: 'sc_svis_co',  coachId: coachId('Bryce'),   sport: 'Basketball', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-11-20', startTime: '3:00pm', endTime: '4:00pm', noClass: '10/16',                    payRate: 80 }),
   ...expandShifts({ schoolId: 'sc_synapse',  coachId: coachId('Jessica'), sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-09-18', endDate: '2026-11-06', startTime: '2:45pm', endTime: '3:45pm', noClass: '10/9',                     payRate: 45 }),
   // Brittan Acres cheer (winter): Fridays 2:35-3:35, starts 11/13. No-class dates and the makeup Friday are not set yet.
-  ...expandShifts({ schoolId: 'sc_brittan',  coachId: coachId('Emily'),   sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-11-13', endDate: '2027-01-29', startTime: '2:35pm', endTime: '3:35pm', noClass: '', payRate: 45 }),
+  ...expandShifts({ schoolId: 'sc_brittan',  coachId: coachId('Emily'),   sport: 'Cheerleading', dayOfWeek: 'Friday',    startDate: '2026-11-13', endDate: '2027-01-29', startTime: '2:35pm', endTime: '3:35pm', noClass: '11/27, 12/18, 12/24, 12/31', payRate: 45 }),
 ];
 
 export const shifts: Shift[] = rawShifts;
